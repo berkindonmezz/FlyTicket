@@ -99,7 +99,7 @@ CREATE TABLE `flight` (
 
 LOCK TABLES `flight` WRITE;
 /*!40000 ALTER TABLE `flight` DISABLE KEYS */;
-INSERT INTO `flight` VALUES (1,34,6,'2026-05-20 08:00:00','2026-05-20 09:15:00',1500.00,180,179),(2,6,35,'2026-05-20 10:30:00','2026-05-20 11:45:00',1200.00,150,149),(3,35,34,'2026-05-20 13:00:00','2026-05-20 14:10:00',1600.00,180,179),(4,34,7,'2026-05-21 09:00:00','2026-05-21 10:30:00',1800.00,200,199),(5,7,6,'2026-05-21 14:00:00','2026-05-21 15:15:00',1400.00,150,149),(6,6,61,'2026-05-22 08:30:00','2026-05-22 10:00:00',1700.00,180,179),(7,61,34,'2026-05-22 18:00:00','2026-05-22 19:45:00',2000.00,200,199),(8,34,35,'2026-05-23 07:00:00','2026-05-23 08:10:00',1300.00,150,149),(9,35,7,'2026-05-23 16:00:00','2026-05-23 17:10:00',1100.00,150,149),(10,7,34,'2026-05-24 20:00:00','2026-05-24 21:30:00',1900.00,200,199);
+INSERT INTO `flight` VALUES (1,34,6,'2026-05-20 08:00:00','2026-05-20 09:15:00',1500.00,180,179),(2,6,35,'2026-05-20 10:30:00','2026-05-20 11:45:00',1200.00,150,149),(3,35,34,'2026-05-20 13:00:00','2026-05-20 14:10:00',1600.00,180,179),(4,34,7,'2026-05-21 09:00:00','2026-05-21 10:30:00',1800.00,200,199),(5,7,6,'2026-05-21 14:00:00','2026-05-21 15:15:00',1400.00,150,149),(6,6,61,'2026-05-22 08:30:00','2026-05-22 10:00:00',1700.00,180,179),(7,61,34,'2026-05-22 18:00:00','2026-05-22 19:45:00',2000.00,200,199),(8,34,35,'2026-05-23 07:00:00','2026-05-23 08:10:00',1300.00,150,149),(9,35,7,'2026-05-23 16:00:00','2026-05-23 17:10:00',1100.00,150,149),(10,7,34,'2026-05-24 20:00:00','2026-05-24 21:30:00',1900.00,200,196);
 /*!40000 ALTER TABLE `flight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,7 +129,7 @@ CREATE TABLE `ticket` (
 
 LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
-INSERT INTO `ticket` VALUES (1,'Ahmet','Yılmaz','ahmet.y@mail.com',1,'1'),(2,'Ayşe','Kaya','ayse.k@mail.com',2,'1'),(3,'Mehmet','Demir','mehmet.d@mailk.com',3,'1'),(4,'Fatma','Çelik','fatma.c@mail.com',4,'1'),(5,'Can','Öztürk','can.o@mail.com',5,'1'),(6,'Elif','Şahin','elif.s@mail.com',6,'1'),(7,'Burak','Arslan','burak.a@mail.com',7,'1'),(8,'Zeynep','Doğan','zeynep.d@mail.com',8,'1'),(9,'Emre','Kılıç','emre.k@mail.com',9,'1'),(10,'Selin','Yıldız','selin.y@mail.com',10,'1');
+INSERT INTO `ticket` VALUES (1,'AHMET','YILMAZ','ahmet.yilmaz@example.com',1,'12A'),(2,'AYŞE','DEMİR','ayse.demir@example.com',2,'3C'),(3,'MEHMET','KAYA','mehmet.kaya@example.com',3,'14F'),(4,'FATMA','ÇELİK','fatma.celik@example.com',4,'7B'),(5,'MUSTAFA','ŞAHİN','mustafa.sahin@example.com',5,'21E'),(6,'ZEYNEP','ÖZTÜRK','zeynep.ozturk@example.com',6,'1A'),(7,'ALİ','YILDIZ','ali.yildiz@example.com',7,'8D'),(8,'ELİF','DOĞAN','elif.dogan@example.com',8,'15C'),(9,'BURAK','ARSLAN','burak.arslan@example.com',9,'9F'),(10,'CEREN','KOÇ','ceren.koc@example.com',10,'4B');
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -142,4 +142,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-16 15:10:47
+-- Dump completed on 2026-05-16 23:33:27

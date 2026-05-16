@@ -2,7 +2,13 @@ const db = require('../config/db');
 const nodemailer = require('nodemailer');
 
 const buyTicket = async (req, res) => {
-    const { flight_id, passenger_name, passenger_surname, passenger_email } = req.body;
+    // 1. seat_number verisini React'ten karşılıyoruz
+    const { flight_id, passenger_name, passenger_surname, passenger_email, seat_number } = req.body;
+
+    // Güvenlik kontrolü: Koltuk numarası gelmediyse işlemi reddet
+    if (!seat_number) {
+        return res.status(400).json({ message: "Seat number is required!" });
+    }
 
     try {
         const [flights] = await db.query("SELECT departure_time, seats_available, seats_total FROM flight WHERE flight_id = ?", [flight_id]);
@@ -15,14 +21,15 @@ const buyTicket = async (req, res) => {
             return res.status(400).json({ message: "Sorry, no seats available on this flight!" });
         }
 
-        const [soldTickets] = await db.query("SELECT COUNT(*) as total_sold FROM ticket WHERE flight_id = ?", [flight_id]);
-        const nextSeatNumber = (soldTickets[0].total_sold + 1).toString();
+        // ESKİ MANUEL KOLTUK HESAPLAMA SİLİNDİ
 
         const ticketQuery = `
             INSERT INTO ticket (flight_id, passenger_name, passenger_surname, passenger_email, seat_number) 
             VALUES (?, ?, ?, ?, ?)
         `;
-        const [ticketResult] = await db.query(ticketQuery, [flight_id, passenger_name, passenger_surname, passenger_email, nextSeatNumber]);
+        
+        // nextSeatNumber yerine doğrudan seat_number'ı veritabanına yazdırıyoruz
+        const [ticketResult] = await db.query(ticketQuery, [flight_id, passenger_name, passenger_surname, passenger_email, seat_number]);
 
         const updateFlightQuery = `
             UPDATE flight 
@@ -61,7 +68,7 @@ const buyTicket = async (req, res) => {
                     <p>Your flight reservation has been successfully completed. Your ticket details are below:</p>
                     <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
                         <p><b>PNR/Ticket No:</b> #${ticketResult.insertId}</p>
-                        <p><b>Seat No:</b> ${nextSeatNumber}</p>
+                        <p><b>Seat No:</b> ${seat_number}</p>
                         <p><b>Route:</b> ${fromCityName} ➔ ${toCityName}</p>
                         <p><b>Departure Time:</b> ${new Date(flights[0].departure_time).toLocaleString('en-US')}</p>
                     </div>
@@ -77,11 +84,17 @@ const buyTicket = async (req, res) => {
 
         res.status(201).json({ 
             message: "Ticket purchased successfully! Have a pleasant flight.",
-            seat_assigned: nextSeatNumber 
+            seat_assigned: seat_number 
         });
 
     } catch (error) {
         console.error("Ticket purchase error:", error);
+        
+        // Eşzamanlılık Kontrolü: Eğer aynı uçuşa aynı koltuk tekrar satılmaya çalışılırsa MySQL ER_DUP_ENTRY hatası verir.
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ message: "Seçilen koltuk az önce satıldı, lütfen başka bir koltuk seçin." });
+        }
+
         res.status(500).json({ message: "Server error, ticket could not be created." });
     }
 };
@@ -104,4 +117,22 @@ const getAllTickets = async (req, res) => {
     }
 };
 
-module.exports = { buyTicket, getAllTickets };
+const getBookedSeats = async (req, res) => {
+    const flightId = req.params.id;
+
+    try {
+        const [rows] = await db.execute(
+            'SELECT seat_number FROM ticket WHERE flight_id = ?',
+            [flightId]
+        );
+
+        const bookedSeats = rows.map(row => row.seat_number);
+
+        res.status(200).json(bookedSeats);
+    } catch (error) {
+        console.error("Error while fetching booked/occupied seats:", error);
+        res.status(500).json({ message: "Server error fetching seats." });
+    }
+};
+
+module.exports = { buyTicket, getAllTickets, getBookedSeats };
